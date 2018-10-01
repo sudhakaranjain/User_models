@@ -1,6 +1,6 @@
 ---
-API: 2.1
-OpenSesame: 3.2.5b1
+API: 2
+OpenSesame: 3.1.4b1
 Platform: posix
 ---
 set width 1280
@@ -28,7 +28,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "/home/sudhakaran/Desktop/Speller"
+set experiment_path "/home/arnout/Documents/usermodels/EyeTracking Speller/EyeTracking Speller/Speller"
 set disable_garbage_collection yes
 set description "A brain-computer interface based on covert attention and pupillometry"
 set coordinates relative
@@ -55,6 +55,10 @@ define feedback Sentence
 	set duration 745
 	set description "Provides feedback to the participant"
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=22 html=yes show_if=always text="Your sentence is: [incomplete]" x=0 y=0 z_index=0
+
+define pygaze_start_recording _pygaze_start_recording
+	set status_msg "start_trial [count_free_writing]"
+	set description "Puts the eye tracker into recording mode"
 
 define form_multiple_choice autocomplete_options
 	set timeout infinite
@@ -163,6 +167,14 @@ define inline_script eye_tracker
 			itemArray.show()
 			if pylink != None:
 				ps = eyetracker.pupil_size()
+				#if ps == 0:
+					#set start of blink
+				#	blinkTime = self.time()
+				#	while ps == 0:
+				#		t0 = self.time()
+				#		if t0 - blinkTime >= 20:
+				#			hasBlinked = true
+				#			break
 			else:
 				# Use Y coordinate of mouse
 				ps = my_mouse.get_pos()[0][1]+var.height/2
@@ -190,12 +202,13 @@ define inline_script fetch_suggestions
 	from pandas import DataFrame, read_csv
 	import matplotlib.pyplot as plt
 	
-	df = pandas.read_csv("/home//sudhakaran//Desktop//Speller//20k.csv")
+	df = pandas.read_csv("/home/arnout/Documents/usermodels/20k.csv")
 	df = df.sort_values(by = 'priority', ascending = False)
 	var.rowlen = len(df.index) 
 	var.i = 0
 	while var.i < var.rowlen:
 		x = df.iloc[var.i]['word']
+		x = str(x)
 		if x.startswith(var.string):
 			var.suggestion1 = x
 			break
@@ -258,6 +271,7 @@ define sequence free_writing
 	run update_sentence always
 	run Sentence always
 	run pygaze_log always
+	run pygaze_log always
 	run logger always
 	run pygaze_stop_recording always
 
@@ -284,19 +298,26 @@ define inline_script free_writing_script
 	t0 = clock.time()
 	eyetracker.log('start_free_writing')
 	ch = getInput(writingIndicator=var.string)
+	ch = str.lower(ch)
 	#if ch == 'Finish':
 	#	break
-	if ch == 'Del' and len(var.string) > 0:
-		var.string = var.string[:-1]
-		var.letter = ""
-	elif ch == 'Space':
+	if ch == 'del' and len(var.string) > 0:
+		if var.string != "":
+			var.string = var.string[:-1]
+		else:
+			if var.incomplete != "":
+				var.string = (var.incomplete.split()[-1])[:-1]
+		if var.incomplete != "":
+			var.incomplete = var.incomplete[:-1]
+			var.letter = ""
+	elif ch == 'space':
 		var.letter = u' '
 	else:
 		var.string += ch
 		var.letter = ch
 	
 	t1 = clock.time()
-	eyetracker.log('var free_writing_result %s' % s)
+	eyetracker.log('var free_writing_result %s' % var.letter) 
 	eyetracker.log('var free_writing_time %s' % (t1-t0))
 	eyetracker.log('end_free_writing')
 	__end__
@@ -326,7 +347,7 @@ define inline_script get_input
 			'MNOP'			: ['N', 'M', 'P', 'O'],
 			'QRST'			: ['R', 'Q', 'T', 'S'],
 			'UVWX'			: ['V', 'U', 'X', 'W'],
-			'YZ?Space'		: ['Z', 'Y', 'Question', 'Space'],
+			'YZQuestionSpace'		: ['Z', 'Y', '?', 'Space'],
 			'DelFinish'		: ['Del', 'Finish'],
 			}
 		itemKeys = [
@@ -395,6 +416,11 @@ define inline_script globals
 	my_mouse = mouse()
 	xc = var.width/2
 	yc = var.height/2
+	
+	blinkTime = 0
+	global blinkTime
+	hasBlinked = False
+	global hasBlinked
 	__end__
 	set _prepare ""
 
@@ -949,6 +975,41 @@ define logger logger
 	set description "Logs experimental data"
 	set auto_log yes
 
+define pygaze_drift_correct pygaze_drift_correct
+	set ypos 0
+	set xpos 0
+	set target_style default
+	set target_color "[foreground]"
+	set fixation_triggered no
+	set draw_target yes
+	set description "Perform eye-tracker drift correction"
+
+define pygaze_init pygaze_init
+	set tracker_type "Advanced dummy (mouse simulation)"
+	set tobiiglasses_udpport 49152
+	set tobiiglasses_address "192.168.71.50"
+	set smi_send_port 4444
+	set smi_recv_port 5555
+	set smi_ip "127.0.0.1"
+	set sacc_vel_thr 35
+	set sacc_acc_thr 9500
+	set eyelink_pupil_size_mode area
+	set eyelink_force_drift_correct yes
+	set description "Initialize and calibrate eye tracker"
+	set calibrate yes
+	set calbeep yes
+	set _logfile automatic
+
+define pygaze_log pygaze_log
+	set throttle 2
+	set msg ""
+	set description "Writes information to the eye-tracker logfile"
+	set auto_log no
+
+define pygaze_stop_recording pygaze_stop_recording
+	set status_msg stop_trial
+	set description "Stops recording of eye tracking data"
+
 define sequence python_definitions
 	set flush_keyboard yes
 	set description "Runs a number of items in sequence"
@@ -1109,7 +1170,7 @@ define inline_script update_sentence
 		var.sentence += var.chosen + " "
 		var.temp1 = df.loc[df.word == var.chosen]
 		df.priority[df.word == var.chosen] = var.temp1.iloc[0]['priority'] + 500
-		df.to_csv("/home//sudhakaran//Desktop//Speller//20k.csv", encoding='utf-8', index=False)
+		df.to_csv("/home/arnout/Documents/usermodels/20k.csv", encoding='utf-8', index=False)
 		var.string = ""
 		var.letter = ""
 		var.suggestion1 = ""
@@ -1125,7 +1186,7 @@ define inline_script update_sentence
 		if var.letter == " ":
 			var.sentence = var.incomplete
 			df.loc[var.rowlen] = [var.string, 10000]
-			df.to_csv("/home//sudhakaran//Desktop//Speller//20k.csv", encoding='utf-8', index=False)
+			df.to_csv("/home/arnout/Documents/usermodels/20k.csv", encoding='utf-8', index=False)
 			var.string = ""
 			var.letter = ""
 	__end__
