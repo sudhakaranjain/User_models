@@ -1,4 +1,4 @@
-# The mind-writing pupil: Experiment
+# Eye tracking speller with word completion
 
 Dependencies:
 
