@@ -1,14 +1,20 @@
-"coords","gazePos","gx","gy","incomplete","letter","letter_time","sentence","string","total_time"
-"(738.5, 414.6000061035156)","NA","NA","NA","my ","","51884.7493472","my ","","0"
-"(647.0, 503.29998779296875)","NA","NA","NA","my name ","","64245.1117359","my name ","","0"
-"(642.9000244140625, 491.3999938964844)","NA","NA","NA","my name z","z","37064.3330389","my name ","z","0"
-"(741.5999755859375, 426.0)","NA","NA","NA","my name ","","43438.093213","my name ","","0"
-"(643.2999877929688, 500.20001220703125)","NA","NA","NA","my name my ","","51872.754394","my name my ","","0"
-"(650.7000122070312, 482.79998779296875)","NA","NA","NA","my name my l","l","56715.7115926","my name my ","l","0"
-"(647.7999877929688, 505.29998779296875)","NA","NA","NA","my name my lk","k","49293.6617898","my name my ","lk","0"
-"(644.2000122070312, 488.3999938964844)","NA","NA","NA","my name my l","","44526.4058951","my name my ","l","0"
-"(663.7999877929688, 455.20001220703125)","NA","NA","NA","my name my li","i","59712.0916183","my name my ","li","0"
-"(642.7999877929688, 494.79998779296875)","NA","NA","NA","my name my lis","s","50975.0748722","my name my ","lis","0"
-"(638.2999877929688, 480.29998779296875)","NA","NA","NA","my name my list","t","58129.9364524","my name my ","list","0"
-"(778.9000244140625, 395.3999938964844)","NA","NA","NA","my name my lisa ","","32809.3363712","my name my lisa ","","0"
-"(593.0, 394.29998779296875)","NA","NA","NA","my name my lisa ","","51518.3346387","my name my lisa ","","1140489.50666"
+coords,gazePos,gx,gy,incomplete,letter,letter_time,sentence,string,total_time
+"(738.5, 414.6000061035156)",NA,NA,NA,my ,,51884.7493472,my ,,0
+"(647.0, 503.29998779296875)",NA,NA,NA,my name ,,64245.1117359,my name ,,0
+"(642.9000244140625, 491.3999938964844)",NA,NA,NA,my name z,z,37064.3330389,my name ,z,0
+"(741.5999755859375, 426.0)",NA,NA,NA,my name ,,43438.093213,my name ,,0
+"(643.2999877929688, 500.20001220703125)",NA,NA,NA,my name my ,,51872.754394,my name my ,,0
+"(650.7000122070312, 482.79998779296875)",NA,NA,NA,my name my l,l,56715.7115926,my name my ,l,0
+"(647.7999877929688, 505.29998779296875)",NA,NA,NA,my name my lk,k,49293.6617898,my name my ,lk,0
+"(644.2000122070312, 488.3999938964844)",NA,NA,NA,my name my l,,44526.4058951,my name my ,l,0
+"(663.7999877929688, 455.20001220703125)",NA,NA,NA,my name my li,i,59712.0916183,my name my ,li,0
+"(642.7999877929688, 494.79998779296875)",NA,NA,NA,my name my lis,s,50975.0748722,my name my ,lis,0
+"(638.2999877929688, 480.29998779296875)",NA,NA,NA,my name my list,t,58129.9364524,my name my ,list,0
+"(778.9000244140625, 395.3999938964844)",NA,NA,NA,my name my lisa ,,32809.3363712,my name my lisa ,,0
+"(593.0, 394.29998779296875)",NA,NA,NA,my name my lisa ,,51518.3346387,my name my lisa ,,1140489.50666
+,,,,,,,,,
+,,,,,,,,,
+Time take without error for traditional speller :,880.6,,,,,,,,
+Error time,414.4,,,,,,,,
+Total time take for trad speller,1295,,,,,,,,
+Total time for our system,900.4,,,,,,,,

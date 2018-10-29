@@ -9,3 +9,10 @@ coords,gazePos,gx,gy,incomplete,letter,letter_time,sentence,string,total_time
 "(953.2000122070312, 232.89999389648438)",NA,NA,NA,my name on is li,i,36756.5210949,my name on is ,li,0
 "(340.8999938964844, 221.8000030517578)",NA,NA,NA,my name on is lis,s,38901.2610176,my name on is ,lis,0
 "(937.9000244140625, 247.0)",NA,NA,NA,my name on is lisa ,,31993.7327571,my name on is lisa ,,424727
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Time take without error for traditional speller :,634.1,,,,,,,,
+Error time,0,,,,,,,,
+Total time take for trad speller,634.1,,,,,,,,
+Total time for our system,424.7,,,,,,,,
