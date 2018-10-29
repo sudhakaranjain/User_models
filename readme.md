@@ -1,4 +1,4 @@
-# Eye tracking speller with word completion
+# Eye tracking speller with word completion/prediction
 
 Dependencies:
 
